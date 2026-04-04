@@ -1,0 +1,12 @@
+{
+  "home": {
+    "title": "Bem-vindo",
+    "description": "Plataforma de cursos"
+  },
+  "notFound": {
+    "title": "Página não encontrada"
+  },
+  "layout": {
+    "title": "Menu Principal"
+  }
+}

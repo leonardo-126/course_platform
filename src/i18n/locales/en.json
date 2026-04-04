@@ -1,0 +1,12 @@
+{
+  "home": {
+    "title": "Welcome",
+    "description": "Course platform"
+  },
+  "notFound": {
+    "title": "Page not found"
+  },
+  "layout": {
+    "title": "Main Menu"
+  }
+}
