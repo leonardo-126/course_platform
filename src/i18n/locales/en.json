@@ -4,9 +4,60 @@
     "description": "Course platform"
   },
   "notFound": {
-    "title": "Page not found"
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "backHome": "Back to home"
   },
   "layout": {
     "title": "Main Menu"
+  },
+  "navbar": {
+    "brand": "Course Platform",
+    "home": "Home",
+    "courses": "Courses",
+    "pricing": "Pricing",
+    "login": "Login",
+    "signup": "Sign Up"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "myCourses": "My Courses",
+    "progress": "Progress",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "login": {
+    "title": "Login to your account",
+    "description": "Enter your email below to login to your account",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot your password?",
+    "submit": "Login",
+    "google": "Login with Google",
+    "noAccount": "Don't have an account?",
+    "signupLink": "Sign up"
+  },
+  "signup": {
+    "title": "Create your account",
+    "description": "Fill in the form below to create your account",
+    "name": "Full Name",
+    "namePlaceholder": "John Doe",
+    "email": "Email",
+    "emailDescription": "We'll use this to contact you. We will not share your email with anyone else.",
+    "password": "Password",
+    "passwordDescription": "Must be at least 8 characters long.",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordDescription": "Please confirm your password.",
+    "submit": "Create Account",
+    "orContinueWith": "Or continue with",
+    "github": "Sign up with GitHub",
+    "hasAccount": "Already have an account?",
+    "loginLink": "Sign in"
+  },
+  "authNavbar": {
+    "search": "Search courses...",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
   }
 }

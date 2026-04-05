@@ -4,9 +4,60 @@
     "description": "Plataforma de cursos"
   },
   "notFound": {
-    "title": "Página não encontrada"
+    "title": "Página não encontrada",
+    "description": "A página que você procura não existe ou foi movida.",
+    "backHome": "Voltar ao início"
   },
   "layout": {
     "title": "Menu Principal"
+  },
+  "navbar": {
+    "brand": "Course Platform",
+    "home": "Início",
+    "courses": "Cursos",
+    "pricing": "Preços",
+    "login": "Entrar",
+    "signup": "Cadastrar"
+  },
+  "sidebar": {
+    "dashboard": "Painel",
+    "myCourses": "Meus Cursos",
+    "progress": "Progresso",
+    "settings": "Configurações",
+    "logout": "Sair"
+  },
+  "login": {
+    "title": "Entrar na sua conta",
+    "description": "Insira seu email abaixo para acessar sua conta",
+    "email": "Email",
+    "password": "Senha",
+    "forgotPassword": "Esqueceu sua senha?",
+    "submit": "Entrar",
+    "google": "Entrar com Google",
+    "noAccount": "Não tem uma conta?",
+    "signupLink": "Cadastre-se"
+  },
+  "signup": {
+    "title": "Crie sua conta",
+    "description": "Preencha o formulário abaixo para criar sua conta",
+    "name": "Nome completo",
+    "namePlaceholder": "João Silva",
+    "email": "Email",
+    "emailDescription": "Usaremos este email para contato. Não compartilharemos com ninguém.",
+    "password": "Senha",
+    "passwordDescription": "Deve ter pelo menos 8 caracteres.",
+    "confirmPassword": "Confirmar senha",
+    "confirmPasswordDescription": "Por favor, confirme sua senha.",
+    "submit": "Criar conta",
+    "orContinueWith": "Ou continue com",
+    "github": "Cadastrar com GitHub",
+    "hasAccount": "Já tem uma conta?",
+    "loginLink": "Entrar"
+  },
+  "authNavbar": {
+    "search": "Buscar cursos...",
+    "profile": "Perfil",
+    "settings": "Configurações",
+    "logout": "Sair"
   }
 }

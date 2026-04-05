@@ -1,11 +1,17 @@
-import { useTheme } from "../contexts/ThemeContext";
+import { useTheme } from "@/contexts/ThemeContext";
+import { Button } from "@/Components/ui/button";
+import { Moon, Sun } from "lucide-react";
 
 export default function ThemeSwitcher() {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <button onClick={toggleTheme}>
-      {theme === "light" ? "Dark" : "Light"}
-    </button>
+    <Button variant="ghost" size="icon" onClick={toggleTheme}>
+      {theme === "light" ? (
+        <Moon className="h-4 w-4" />
+      ) : (
+        <Sun className="h-4 w-4" />
+      )}
+    </Button>
   );
 }

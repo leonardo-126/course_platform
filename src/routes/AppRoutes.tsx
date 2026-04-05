@@ -1,15 +1,31 @@
+import AuthLayout from "@/layouts/AuthLayout";
+import PublicLayout from "@/layouts/PublicLayout";
+import Login from "@/pages/auth/login";
+import Signup from "@/pages/auth/signup";
+import Home from "@/pages/Home";
+import NotFound from "@/pages/NotFound";
 import { Route, Routes } from "react-router-dom";
-import MainLayout from "../layouts/MainLayout.tsx";
-import Home from "../pages/Home.tsx";
-import NotFound from "../pages/NotFound.tsx";
 
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<MainLayout />}>
+      {/* Rotas públicas — Navbar simples */}
+      <Route path="/" element={<PublicLayout />}>
         <Route index element={<Home />} />
+        {/* <Route path="courses" element={<Courses />} /> */}
+        {/* <Route path="pricing" element={<Pricing />} /> */}
       </Route>
 
+      {/* Rotas autenticadas — Navbar + Sidebar */}
+      <Route path="/dashboard" element={<AuthLayout />}>
+        {/* <Route index element={<Dashboard />} /> */}
+        {/* <Route path="courses" element={<MyCourses />} /> */}
+        {/* <Route path="progress" element={<Progress />} /> */}
+        {/* <Route path="settings" element={<Settings />} /> */}
+        {/* <Route path="profile" element={<Profile />} /> */}
+      </Route>
+      <Route path="login" element={<Login />} />
+      <Route path="signup" element={<Signup />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
