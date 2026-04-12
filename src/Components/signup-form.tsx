@@ -9,16 +9,56 @@ import {
 import { Input } from "@/Components/ui/input";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { ApiError } from "@/lib/api";
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
   const { t } = useTranslation();
+  const { signup } = useAuth();
+  const navigate = useNavigate();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit: React.ComponentProps<"form">["onSubmit"] = async event => {
+    event.preventDefault();
+    setError(null);
+
+    if (password !== confirmPassword) {
+      setError("As senhas não coincidem.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await signup({ name, email, password });
+      navigate("/dashboard", { replace: true });
+    } catch (err) {
+      const message =
+        err instanceof ApiError
+          ? err.message
+          : "Falha ao criar conta. Tente novamente.";
+      setError(message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
+    <form
+      className={cn("flex flex-col gap-6", className)}
+      onSubmit={handleSubmit}
+      {...props}
+    >
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center border-gray-100">
           <h1 className="text-2xl font-bold">{t("signup.title")}</h1>
@@ -32,6 +72,8 @@ export function SignupForm({
             id="name"
             type="text"
             placeholder={t("signup.namePlaceholder")}
+            value={name}
+            onChange={e => setName(e.target.value)}
             required
             className="bg-background"
           />
@@ -42,6 +84,8 @@ export function SignupForm({
             id="email"
             type="email"
             placeholder="m@example.com"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
             required
             className="bg-background"
           />
@@ -52,6 +96,8 @@ export function SignupForm({
           <Input
             id="password"
             type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
             required
             className="bg-background"
           />
@@ -64,6 +110,8 @@ export function SignupForm({
           <Input
             id="confirm-password"
             type="password"
+            value={confirmPassword}
+            onChange={e => setConfirmPassword(e.target.value)}
             required
             className="bg-background"
           />
@@ -71,8 +119,15 @@ export function SignupForm({
             {t("signup.confirmPasswordDescription")}
           </FieldDescription>
         </Field>
+        {error && (
+          <p className="text-sm text-destructive" role="alert">
+            {error}
+          </p>
+        )}
         <Field>
-          <Button type="submit">{t("signup.submit")}</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "..." : t("signup.submit")}
+          </Button>
         </Field>
         <FieldSeparator>{t("signup.orContinueWith")}</FieldSeparator>
         <Field>

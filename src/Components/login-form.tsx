@@ -1,27 +1,59 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/Components/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/Components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/Components/ui/card"
+} from "@/Components/ui/card";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@/Components/ui/field"
-import { Input } from "@/Components/ui/input"
-import { useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
+} from "@/Components/ui/field";
+import { Input } from "@/Components/ui/input";
+import { useTranslation } from "react-i18next";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { ApiError } from "@/lib/api";
+
+type LocationState = { from?: { pathname?: string } };
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const redirectTo =
+    (location.state as LocationState | null)?.from?.pathname ?? "/dashboard";
+
+  const handleSubmit: React.ComponentProps<"form">["onSubmit"] = async event => {
+    event.preventDefault();
+    setError(null);
+    setIsSubmitting(true);
+    try {
+      await login({ email, password });
+      navigate(redirectTo, { replace: true });
+    } catch (err) {
+      const message =
+        err instanceof ApiError ? err.message : "Falha ao entrar. Tente novamente.";
+      setError(message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -31,7 +63,7 @@ export function LoginForm({
           <CardDescription>{t("login.description")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit}>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">{t("login.email")}</FieldLabel>
@@ -39,6 +71,8 @@ export function LoginForm({
                   id="email"
                   type="email"
                   placeholder="m@example.com"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                   required
                 />
               </Field>
@@ -52,10 +86,23 @@ export function LoginForm({
                     {t("login.forgotPassword")}
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  required
+                />
               </Field>
+              {error && (
+                <p className="text-sm text-destructive" role="alert">
+                  {error}
+                </p>
+              )}
               <Field>
-                <Button type="submit">{t("login.submit")}</Button>
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "..." : t("login.submit")}
+                </Button>
                 <FieldDescription className="text-center">
                   {t("login.noAccount")}{" "}
                   <Link to="/signup" className="underline underline-offset-4">
@@ -68,5 +115,5 @@ export function LoginForm({
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
