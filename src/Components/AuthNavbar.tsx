@@ -9,12 +9,20 @@ import {
 } from "@/Components/ui/dropdown-menu";
 import { LogOut, Settings, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import LanguageSwitcher from "./LanguegeSwitcher";
 import ThemeSwitcher from "./ThemeSwitcher";
 
 export default function AuthNavbar() {
   const { t } = useTranslation();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
@@ -55,7 +63,10 @@ export default function AuthNavbar() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex items-center gap-2 text-destructive focus:text-destructive">
+              <DropdownMenuItem
+                onClick={handleLogout}
+                className="flex items-center gap-2 text-destructive focus:text-destructive"
+              >
                 <LogOut className="h-4 w-4" />
                 {t("authNavbar.logout")}
               </DropdownMenuItem>

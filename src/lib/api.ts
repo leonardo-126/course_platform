@@ -1,5 +1,10 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
 
+function getXsrfToken(): string | null {
+  const match = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]*)/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
 export class ApiError extends Error {
   status: number;
   data?: unknown;
@@ -31,6 +36,7 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      ...(getXsrfToken() ? { "X-XSRF-TOKEN": getXsrfToken()! } : {}),
       ...headers,
     },
     body: body !== undefined ? JSON.stringify(body) : undefined,

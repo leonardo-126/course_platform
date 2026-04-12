@@ -42,11 +42,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = useCallback(async (credentials: LoginCredentials) => {
+    await authService.csrfCookie();
     const loggedUser = await authService.login(credentials);
     setUser(loggedUser);
   }, []);
 
   const signup = useCallback(async (credentials: SignupCredentials) => {
+    await authService.csrfCookie();
     const newUser = await authService.signup(credentials);
     setUser(newUser);
   }, []);

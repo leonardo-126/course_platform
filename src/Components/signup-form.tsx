@@ -25,7 +25,7 @@ export function SignupForm({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [password_confirmation, setPasswordConfirmation] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -33,14 +33,14 @@ export function SignupForm({
     event.preventDefault();
     setError(null);
 
-    if (password !== confirmPassword) {
+    if (password !== password_confirmation) {
       setError("As senhas não coincidem.");
       return;
     }
 
     setIsSubmitting(true);
     try {
-      await signup({ name, email, password });
+      await signup({ name, email, password, password_confirmation });
       navigate("/dashboard", { replace: true });
     } catch (err) {
       const message =
@@ -105,18 +105,18 @@ export function SignupForm({
         </Field>
         <Field>
           <FieldLabel htmlFor="confirm-password">
-            {t("signup.confirmPassword")}
+            {t("signup.password_confirmation")}
           </FieldLabel>
           <Input
             id="confirm-password"
             type="password"
-            value={confirmPassword}
-            onChange={e => setConfirmPassword(e.target.value)}
+            value={password_confirmation}
+            onChange={e => setPasswordConfirmation(e.target.value)}
             required
             className="bg-background"
           />
           <FieldDescription>
-            {t("signup.confirmPasswordDescription")}
+            {t("signup.password_confirmationDescription")}
           </FieldDescription>
         </Field>
         {error && (
