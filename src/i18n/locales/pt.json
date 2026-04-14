@@ -54,6 +54,17 @@
     "hasAccount": "Já tem uma conta?",
     "loginLink": "Entrar"
   },
+  "courses": {
+    "title": "Cursos",
+    "description": "Explore nossos cursos disponíveis",
+    "loading": "Carregando cursos...",
+    "loadError": "Falha ao carregar cursos. Tente novamente.",
+    "empty": "Nenhum curso disponível no momento.",
+    "price": "Preço",
+    "students": "alunos",
+    "rating": "Avaliação",
+    "viewMore": "Ver mais"
+  },
   "authNavbar": {
     "search": "Buscar cursos...",
     "profile": "Perfil",

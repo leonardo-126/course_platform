@@ -54,6 +54,17 @@
     "hasAccount": "Already have an account?",
     "loginLink": "Sign in"
   },
+  "courses": {
+    "title": "Courses",
+    "description": "Browse our available courses",
+    "loading": "Loading courses...",
+    "loadError": "Failed to load courses. Please try again.",
+    "empty": "No courses available at the moment.",
+    "price": "Price",
+    "students": "students",
+    "rating": "Rating",
+    "viewMore": "View more"
+  },
   "authNavbar": {
     "search": "Search courses...",
     "profile": "Profile",

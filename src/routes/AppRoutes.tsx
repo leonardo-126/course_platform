@@ -3,6 +3,7 @@ import PublicLayout from "@/layouts/PublicLayout";
 import Login from "@/pages/auth/login";
 import Signup from "@/pages/auth/signup";
 import Home from "@/pages/Home";
+import Courses from "@/pages/Courses";
 import NotFound from "@/pages/NotFound";
 import ProtectedRoute from "@/routes/ProtectedRoute";
 import { Route, Routes } from "react-router-dom";
@@ -13,7 +14,6 @@ export default function AppRoutes() {
       {/* Rotas públicas — Navbar simples */}
       <Route path="/" element={<PublicLayout />}>
         <Route index element={<Home />} />
-        {/* <Route path="courses" element={<Courses />} /> */}
         {/* <Route path="pricing" element={<Pricing />} /> */}
       </Route>
 
@@ -21,7 +21,7 @@ export default function AppRoutes() {
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<AuthLayout />}>
           {/* <Route index element={<Dashboard />} /> */}
-          {/* <Route path="courses" element={<MyCourses />} /> */}
+          <Route path="courses" element={<Courses />} />
           {/* <Route path="progress" element={<Progress />} /> */}
           {/* <Route path="settings" element={<Settings />} /> */}
           {/* <Route path="profile" element={<Profile />} /> */}
