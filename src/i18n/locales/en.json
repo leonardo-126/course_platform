@@ -1,7 +1,37 @@
 {
   "home": {
-    "title": "Welcome",
-    "description": "Course platform"
+    "badge": "New courses every week",
+    "title": "Learn the skills that move your career forward",
+    "description": "Hands-on courses taught by industry professionals. Study at your own pace, build real projects, and earn certificates that matter.",
+    "ctaPrimary": "Get started for free",
+    "ctaSecondary": "Browse courses",
+    "stats": {
+      "students": "Active students",
+      "courses": "Available courses",
+      "instructors": "Expert instructors",
+      "rating": "Average rating"
+    },
+    "features": {
+      "title": "Everything you need to grow",
+      "subtitle": "A complete platform built around how people actually learn.",
+      "expertTitle": "Expert instructors",
+      "expertDescription": "Learn from professionals with real-world experience in their fields.",
+      "projectsTitle": "Project-based learning",
+      "projectsDescription": "Apply concepts immediately by building real projects from scratch.",
+      "paceTitle": "Learn at your pace",
+      "paceDescription": "Lifetime access lets you study whenever and wherever it fits you.",
+      "certificateTitle": "Verified certificates",
+      "certificateDescription": "Earn certificates you can share with recruiters and on LinkedIn.",
+      "communityTitle": "Active community",
+      "communityDescription": "Get support from fellow students and instructors in dedicated spaces.",
+      "supportTitle": "Lifetime support",
+      "supportDescription": "Updates, new lessons and feedback from instructors as the field evolves."
+    },
+    "cta": {
+      "title": "Ready to start learning?",
+      "description": "Join thousands of students already building the future of their careers.",
+      "button": "Create your free account"
+    }
   },
   "notFound": {
     "title": "Page not found",

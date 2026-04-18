@@ -1,7 +1,37 @@
 {
   "home": {
-    "title": "Bem-vindo",
-    "description": "Plataforma de cursos"
+    "badge": "Novos cursos toda semana",
+    "title": "Aprenda as habilidades que impulsionam sua carreira",
+    "description": "Cursos práticos ministrados por profissionais do mercado. Estude no seu ritmo, construa projetos reais e conquiste certificados que importam.",
+    "ctaPrimary": "Comece de graça",
+    "ctaSecondary": "Ver cursos",
+    "stats": {
+      "students": "Alunos ativos",
+      "courses": "Cursos disponíveis",
+      "instructors": "Instrutores especialistas",
+      "rating": "Avaliação média"
+    },
+    "features": {
+      "title": "Tudo o que você precisa para evoluir",
+      "subtitle": "Uma plataforma completa construída em torno de como as pessoas realmente aprendem.",
+      "expertTitle": "Instrutores especialistas",
+      "expertDescription": "Aprenda com profissionais que vivem o dia a dia das suas áreas.",
+      "projectsTitle": "Aprendizado prático",
+      "projectsDescription": "Aplique os conceitos na hora construindo projetos reais do zero.",
+      "paceTitle": "Estude no seu ritmo",
+      "paceDescription": "Acesso vitalício para estudar quando e onde preferir.",
+      "certificateTitle": "Certificados verificados",
+      "certificateDescription": "Conquiste certificados para compartilhar com recrutadores e no LinkedIn.",
+      "communityTitle": "Comunidade ativa",
+      "communityDescription": "Tire dúvidas com outros alunos e instrutores em espaços dedicados.",
+      "supportTitle": "Suporte contínuo",
+      "supportDescription": "Atualizações, novas aulas e feedback dos instrutores conforme o mercado evolui."
+    },
+    "cta": {
+      "title": "Pronto para começar?",
+      "description": "Junte-se a milhares de alunos que já estão construindo o futuro das suas carreiras.",
+      "button": "Criar conta gratuita"
+    }
   },
   "notFound": {
     "title": "Página não encontrada",
