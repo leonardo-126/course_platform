@@ -63,9 +63,8 @@ export function CourseForm({
   const [description, setDescription] = useState(
     initialValues?.description ?? ""
   );
-  const [thumbnailUrl, setThumbnailUrl] = useState(
-    initialValues?.thumbnail_url ?? ""
-  );
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
+  const existingThumbnailUrl = initialValues?.thumbnail_url ?? null;
   const [estimatedMinutes, setEstimatedMinutes] = useState(
     initialValues?.estimated_minutes ?? 0
   );
@@ -81,20 +80,20 @@ export function CourseForm({
       const payload: CreateCourseInput = {
         title: title.trim(),
         description: description.trim() || undefined,
-        thumbnail_url: thumbnailUrl.trim() || undefined,
         estimated_minutes: estimatedMinutes,
         xp_reward: xpReward,
+        ...(thumbnail ? { thumbnail } : {}),
       };
       await onSubmit(payload);
     } else {
       const payload: UpdateCourseInput = {
         title: title.trim(),
         slug: slug.trim() || undefined,
-        description: description.trim() || null,
-        thumbnail_url: thumbnailUrl.trim() || null,
+        description: description.trim(),
         estimated_minutes: estimatedMinutes,
         xp_reward: xpReward,
         status,
+        ...(thumbnail ? { thumbnail } : {}),
       };
       await onSubmit(payload);
     }
@@ -165,21 +164,45 @@ export function CourseForm({
           <FieldError errors={err("description")} />
         </Field>
 
-        <Field data-invalid={fieldErrors.thumbnail_url ? true : undefined}>
+        <Field data-invalid={fieldErrors.thumbnail ? true : undefined}>
           <FieldLabel htmlFor="course-thumbnail">
             {t("courseForm.thumbnail")}
           </FieldLabel>
-          <Input
+
+          {existingThumbnailUrl && !thumbnail && (
+            <img
+              src={existingThumbnailUrl}
+              alt=""
+              className="aspect-video w-full max-w-sm rounded-lg border object-cover"
+            />
+          )}
+          {thumbnail && (
+            <img
+              src={URL.createObjectURL(thumbnail)}
+              alt=""
+              className="aspect-video w-full max-w-sm rounded-lg border object-cover"
+            />
+          )}
+
+          <input
             id="course-thumbnail"
-            type="url"
-            value={thumbnailUrl}
-            onChange={e => setThumbnailUrl(e.target.value)}
-            placeholder="https://..."
-            maxLength={500}
-            aria-invalid={Boolean(fieldErrors.thumbnail_url)}
+            type="file"
+            accept="image/*"
+            onChange={e => setThumbnail(e.target.files?.[0] ?? null)}
+            className={cn(
+              "block w-full text-sm text-muted-foreground",
+              "file:mr-3 file:rounded-md file:border file:border-input file:bg-background",
+              "file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-foreground",
+              "file:hover:bg-muted"
+            )}
+            aria-invalid={Boolean(fieldErrors.thumbnail)}
           />
-          <FieldDescription>{t("courseForm.thumbnailHint")}</FieldDescription>
-          <FieldError errors={err("thumbnail_url")} />
+          <FieldDescription>
+            {mode === "edit" && existingThumbnailUrl
+              ? t("courseForm.thumbnailReplaceHint")
+              : t("courseForm.thumbnailHint")}
+          </FieldDescription>
+          <FieldError errors={err("thumbnail")} />
         </Field>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

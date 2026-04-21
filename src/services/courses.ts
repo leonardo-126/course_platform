@@ -13,6 +13,27 @@ type Wrapped<T> = { data: T };
 
 const unwrap = <T>(res: Wrapped<T>): T => res.data;
 
+function appendField(form: FormData, key: string, value: unknown) {
+  if (value === undefined || value === null) return;
+  if (value instanceof File) {
+    form.append(key, value);
+    return;
+  }
+  if (typeof value === "boolean") {
+    form.append(key, value ? "1" : "0");
+    return;
+  }
+  form.append(key, String(value));
+}
+
+function toFormData(input: object): FormData {
+  const form = new FormData();
+  Object.entries(input).forEach(([key, value]) =>
+    appendField(form, key, value)
+  );
+  return form;
+}
+
 export const courseService = {
   list: (page = 1) => api.get<Paginated<Course>>(`/courses?page=${page}`),
 
@@ -25,10 +46,17 @@ export const courseService = {
     api.get<Wrapped<Course>>(`/courses/${id}`).then(unwrap),
 
   create: (data: CreateCourseInput) =>
-    api.post<Wrapped<Course>>("/courses", data).then(unwrap),
+    api
+      .post<Wrapped<Course>>("/courses", toFormData(data))
+      .then(unwrap),
 
-  update: (id: number, data: UpdateCourseInput) =>
-    api.patch<Wrapped<Course>>(`/courses/${id}`, data).then(unwrap),
+  update: (id: number, data: UpdateCourseInput) => {
+    const form = toFormData(data);
+    form.append("_method", "PATCH");
+    return api
+      .post<Wrapped<Course>>(`/courses/${id}`, form)
+      .then(unwrap);
+  },
 
   archive: (id: number) => api.del<void>(`/courses/${id}`),
 };

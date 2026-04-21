@@ -29,17 +29,23 @@ export function setUnauthorizedHandler(handler: () => void) {
 
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { body, headers, ...rest } = options;
+  const isFormData = body instanceof FormData;
 
   const response = await fetch(`${BASE_URL}${path}`, {
     ...rest,
     credentials: "include",
     headers: {
-      "Content-Type": "application/json",
       Accept: "application/json",
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
       ...(getXsrfToken() ? { "X-XSRF-TOKEN": getXsrfToken()! } : {}),
       ...headers,
     },
-    body: body !== undefined ? JSON.stringify(body) : undefined,
+    body:
+      body === undefined
+        ? undefined
+        : isFormData
+          ? body
+          : JSON.stringify(body),
   });
 
   if (response.status === 401) {

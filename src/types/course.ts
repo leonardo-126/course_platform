@@ -52,7 +52,7 @@ export interface Paginated<T> {
 export interface CreateCourseInput {
   title: string;
   description?: string;
-  thumbnail_url?: string;
+  thumbnail?: File;
   estimated_minutes?: number;
   xp_reward?: number;
 }
@@ -60,8 +60,8 @@ export interface CreateCourseInput {
 export interface UpdateCourseInput {
   title?: string;
   slug?: string;
-  description?: string | null;
-  thumbnail_url?: string | null;
+  description?: string;
+  thumbnail?: File;
   estimated_minutes?: number;
   xp_reward?: number;
   status?: CourseStatus;
