@@ -6,6 +6,7 @@ import {
   BookOpen,
   ChevronLeft,
   Clock,
+  Layers,
   Pencil,
   Sparkles,
 } from "lucide-react";
@@ -161,6 +162,12 @@ export default function CourseDetail() {
 
                 {isOwner && (
                   <div className="flex items-center gap-2">
+                    <Link to={`/dashboard/courses/${course.id}/sections`}>
+                      <Button variant="outline" size="sm">
+                        <Layers className="size-4" />
+                        {t("courseDetail.sections")}
+                      </Button>
+                    </Link>
                     <Link to={`/dashboard/courses/${course.id}/edit`}>
                       <Button variant="outline" size="sm">
                         <Pencil className="size-4" />

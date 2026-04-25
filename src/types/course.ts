@@ -75,3 +75,30 @@ export interface CreateCourseAuthorInput {
 export interface UpdateCourseAuthorInput {
   can_view_student_progress: boolean;
 }
+
+export interface CourseSection {
+  id: number;
+  course_id: number;
+  title: string;
+  description: string | null;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateSectionInput {
+  title: string;
+  description?: string | null;
+  sort_order?: number;
+}
+
+export interface UpdateSectionInput {
+  title?: string;
+  description?: string | null;
+  sort_order?: number;
+}
+
+export interface ReorderSectionItem {
+  id: number;
+  sort_order: number;
+}

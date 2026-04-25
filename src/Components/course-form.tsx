@@ -41,9 +41,14 @@ interface CourseFormProps {
   className?: string;
 }
 
-function normalizeNumber(value: string): number {
+function parseNonNegativeInt(value: string): number {
+  if (value.trim() === "") return 0;
   const parsed = Number(value);
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+}
+
+function initialNumberInput(value: number | undefined): string {
+  return value != null ? String(value) : "";
 }
 
 export function CourseForm({
@@ -66,9 +71,11 @@ export function CourseForm({
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const existingThumbnailUrl = initialValues?.thumbnail_url ?? null;
   const [estimatedMinutes, setEstimatedMinutes] = useState(
-    initialValues?.estimated_minutes ?? 0
+    initialNumberInput(initialValues?.estimated_minutes)
   );
-  const [xpReward, setXpReward] = useState(initialValues?.xp_reward ?? 0);
+  const [xpReward, setXpReward] = useState(
+    initialNumberInput(initialValues?.xp_reward)
+  );
   const [status, setStatus] = useState<CourseStatus>(
     initialValues?.status ?? "draft"
   );
@@ -76,12 +83,15 @@ export function CourseForm({
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    const minutes = parseNonNegativeInt(estimatedMinutes);
+    const xp = parseNonNegativeInt(xpReward);
+
     if (mode === "create") {
       const payload: CreateCourseInput = {
         title: title.trim(),
         description: description.trim() || undefined,
-        estimated_minutes: estimatedMinutes,
-        xp_reward: xpReward,
+        estimated_minutes: minutes,
+        xp_reward: xp,
         ...(thumbnail ? { thumbnail } : {}),
       };
       await onSubmit(payload);
@@ -90,8 +100,8 @@ export function CourseForm({
         title: title.trim(),
         slug: slug.trim() || undefined,
         description: description.trim(),
-        estimated_minutes: estimatedMinutes,
-        xp_reward: xpReward,
+        estimated_minutes: minutes,
+        xp_reward: xp,
         status,
         ...(thumbnail ? { thumbnail } : {}),
       };
@@ -214,8 +224,10 @@ export function CourseForm({
               id="course-minutes"
               type="number"
               min={0}
+              inputMode="numeric"
               value={estimatedMinutes}
-              onChange={e => setEstimatedMinutes(normalizeNumber(e.target.value))}
+              onChange={e => setEstimatedMinutes(e.target.value)}
+              placeholder="0"
               aria-invalid={Boolean(fieldErrors.estimated_minutes)}
             />
             <FieldError errors={err("estimated_minutes")} />
@@ -229,8 +241,10 @@ export function CourseForm({
               id="course-xp"
               type="number"
               min={0}
+              inputMode="numeric"
               value={xpReward}
-              onChange={e => setXpReward(normalizeNumber(e.target.value))}
+              onChange={e => setXpReward(e.target.value)}
+              placeholder="0"
               aria-invalid={Boolean(fieldErrors.xp_reward)}
             />
             <FieldError errors={err("xp_reward")} />

@@ -2,11 +2,15 @@ import { api } from "@/lib/api";
 import type {
   Course,
   CourseAuthor,
+  CourseSection,
   CreateCourseAuthorInput,
   CreateCourseInput,
+  CreateSectionInput,
   Paginated,
+  ReorderSectionItem,
   UpdateCourseAuthorInput,
   UpdateCourseInput,
+  UpdateSectionInput,
 } from "@/types/course";
 
 type Wrapped<T> = { data: T };
@@ -81,4 +85,37 @@ export const courseAuthorService = {
 
   remove: (courseId: number, authorId: number) =>
     api.del<void>(`/courses/${courseId}/authors/${authorId}`),
+};
+
+export const courseSectionService = {
+  list: (courseId: number) =>
+    api
+      .get<Wrapped<CourseSection[]>>(`/courses/${courseId}/sections`)
+      .then(unwrap),
+
+  getById: (courseId: number, sectionId: number) =>
+    api
+      .get<Wrapped<CourseSection>>(
+        `/courses/${courseId}/sections/${sectionId}`
+      )
+      .then(unwrap),
+
+  create: (courseId: number, data: CreateSectionInput) =>
+    api
+      .post<Wrapped<CourseSection>>(`/courses/${courseId}/sections`, data)
+      .then(unwrap),
+
+  update: (courseId: number, sectionId: number, data: UpdateSectionInput) =>
+    api
+      .patch<Wrapped<CourseSection>>(
+        `/courses/${courseId}/sections/${sectionId}`,
+        data
+      )
+      .then(unwrap),
+
+  remove: (courseId: number, sectionId: number) =>
+    api.del<void>(`/courses/${courseId}/sections/${sectionId}`),
+
+  reorder: (courseId: number, sections: ReorderSectionItem[]) =>
+    api.patch<void>(`/courses/${courseId}/sections/reorder`, { sections }),
 };
