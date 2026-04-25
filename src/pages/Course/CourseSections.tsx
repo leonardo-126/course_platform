@@ -2,7 +2,9 @@ import { useEffect, useState, type DragEvent, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
+  ChevronDown,
   ChevronLeft,
+  ChevronRight,
   GripVertical,
   Pencil,
   Plus,
@@ -29,6 +31,7 @@ import { ApiError } from "@/lib/api";
 import { extractFieldErrors, type FieldErrors } from "@/lib/api-errors";
 import { courseService, courseSectionService } from "@/services/courses";
 import { useAuth } from "@/contexts/AuthContext";
+import { LessonManager } from "@/Components/lesson-manager";
 import type { Course, CourseSection } from "@/types/course";
 
 type DraftMode = "create" | { editingId: number };
@@ -54,6 +57,18 @@ export default function CourseSections() {
 
   const [busyId, setBusyId] = useState<number | null>(null);
   const [draggingId, setDraggingId] = useState<number | null>(null);
+  const [expandedSections, setExpandedSections] = useState<Set<number>>(
+    new Set()
+  );
+
+  const toggleExpand = (sectionId: number) => {
+    setExpandedSections(prev => {
+      const next = new Set(prev);
+      if (next.has(sectionId)) next.delete(sectionId);
+      else next.add(sectionId);
+      return next;
+    });
+  };
 
   useEffect(() => {
     if (!Number.isFinite(courseId)) {
@@ -312,53 +327,79 @@ export default function CourseSections() {
                       </CardContent>
                     </form>
                   ) : (
-                    <CardHeader>
-                      <div className="flex items-start gap-3">
-                        {canManage && (
-                          <span
-                            className="mt-0.5 cursor-grab text-muted-foreground active:cursor-grabbing"
-                            title={t("sections.dragHandle")}
-                          >
-                            <GripVertical className="size-4" />
-                          </span>
-                        )}
-                        <div className="flex-1 space-y-1">
-                          <CardTitle className="text-base">
-                            <span className="mr-2 text-muted-foreground">
-                              {section.sort_order}.
+                    <>
+                      <CardHeader>
+                        <div className="flex items-start gap-3">
+                          {canManage && (
+                            <span
+                              className="mt-0.5 cursor-grab text-muted-foreground active:cursor-grabbing"
+                              title={t("sections.dragHandle")}
+                            >
+                              <GripVertical className="size-4" />
                             </span>
-                            {section.title}
-                          </CardTitle>
-                          {section.description && (
-                            <CardDescription className="whitespace-pre-line">
-                              {section.description}
-                            </CardDescription>
+                          )}
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            title={
+                              expandedSections.has(section.id)
+                                ? t("sections.collapse")
+                                : t("sections.expand")
+                            }
+                            onClick={() => toggleExpand(section.id)}
+                            className="-mt-0.5"
+                          >
+                            {expandedSections.has(section.id) ? (
+                              <ChevronDown className="size-4" />
+                            ) : (
+                              <ChevronRight className="size-4" />
+                            )}
+                          </Button>
+                          <div className="flex-1 space-y-1">
+                            <CardTitle className="text-base">
+                              <span className="mr-2 text-muted-foreground">
+                                {section.sort_order}.
+                              </span>
+                              {section.title}
+                            </CardTitle>
+                            {section.description && (
+                              <CardDescription className="whitespace-pre-line">
+                                {section.description}
+                              </CardDescription>
+                            )}
+                          </div>
+                          {canManage && (
+                            <div className="flex items-center gap-1">
+                              <Button
+                                variant="ghost"
+                                size="icon-sm"
+                                title={t("sections.edit")}
+                                onClick={() => startEdit(section)}
+                                disabled={busyId === section.id}
+                              >
+                                <Pencil className="size-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon-sm"
+                                title={t("sections.delete")}
+                                onClick={() => handleDelete(section)}
+                                disabled={busyId === section.id}
+                              >
+                                <Trash2 className="size-4 text-destructive" />
+                              </Button>
+                            </div>
                           )}
                         </div>
-                        {canManage && (
-                          <div className="flex items-center gap-1">
-                            <Button
-                              variant="ghost"
-                              size="icon-sm"
-                              title={t("sections.edit")}
-                              onClick={() => startEdit(section)}
-                              disabled={busyId === section.id}
-                            >
-                              <Pencil className="size-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon-sm"
-                              title={t("sections.delete")}
-                              onClick={() => handleDelete(section)}
-                              disabled={busyId === section.id}
-                            >
-                              <Trash2 className="size-4 text-destructive" />
-                            </Button>
-                          </div>
-                        )}
-                      </div>
-                    </CardHeader>
+                      </CardHeader>
+                      {expandedSections.has(section.id) && (
+                        <LessonManager
+                          courseId={courseId}
+                          sectionId={section.id}
+                          canManage={canManage}
+                        />
+                      )}
+                    </>
                   )}
                 </Card>
               </li>

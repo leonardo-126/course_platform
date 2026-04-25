@@ -5,11 +5,15 @@ import type {
   CourseSection,
   CreateCourseAuthorInput,
   CreateCourseInput,
+  CreateLessonInput,
   CreateSectionInput,
+  Lesson,
   Paginated,
+  ReorderLessonItem,
   ReorderSectionItem,
   UpdateCourseAuthorInput,
   UpdateCourseInput,
+  UpdateLessonInput,
   UpdateSectionInput,
 } from "@/types/course";
 
@@ -118,4 +122,56 @@ export const courseSectionService = {
 
   reorder: (courseId: number, sections: ReorderSectionItem[]) =>
     api.patch<void>(`/courses/${courseId}/sections/reorder`, { sections }),
+};
+
+export const lessonService = {
+  list: (courseId: number, sectionId: number) =>
+    api
+      .get<Wrapped<Lesson[]>>(
+        `/courses/${courseId}/sections/${sectionId}/lessons`
+      )
+      .then(unwrap),
+
+  getById: (courseId: number, sectionId: number, lessonId: number) =>
+    api
+      .get<Wrapped<Lesson>>(
+        `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}`
+      )
+      .then(unwrap),
+
+  create: (courseId: number, sectionId: number, data: CreateLessonInput) =>
+    api
+      .post<Wrapped<Lesson>>(
+        `/courses/${courseId}/sections/${sectionId}/lessons`,
+        data
+      )
+      .then(unwrap),
+
+  update: (
+    courseId: number,
+    sectionId: number,
+    lessonId: number,
+    data: UpdateLessonInput
+  ) =>
+    api
+      .patch<Wrapped<Lesson>>(
+        `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}`,
+        data
+      )
+      .then(unwrap),
+
+  remove: (courseId: number, sectionId: number, lessonId: number) =>
+    api.del<void>(
+      `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}`
+    ),
+
+  reorder: (
+    courseId: number,
+    sectionId: number,
+    lessons: ReorderLessonItem[]
+  ) =>
+    api.patch<void>(
+      `/courses/${courseId}/sections/${sectionId}/lessons/reorder`,
+      { lessons }
+    ),
 };

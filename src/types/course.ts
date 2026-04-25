@@ -102,3 +102,44 @@ export interface ReorderSectionItem {
   id: number;
   sort_order: number;
 }
+
+export type LessonType = "video" | "text" | "quiz";
+
+export interface Lesson {
+  id: number;
+  course_section_id: number;
+  title: string;
+  type: LessonType;
+  content: string | null;
+  video_url: string | null;
+  duration_minutes: number;
+  sort_order: number;
+  is_preview: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateLessonInput {
+  title: string;
+  type: LessonType;
+  content?: string | null;
+  video_url?: string | null;
+  duration_minutes?: number;
+  sort_order?: number;
+  is_preview?: boolean;
+}
+
+export interface UpdateLessonInput {
+  title?: string;
+  type?: LessonType;
+  content?: string | null;
+  video_url?: string | null;
+  duration_minutes?: number;
+  sort_order?: number;
+  is_preview?: boolean;
+}
+
+export interface ReorderLessonItem {
+  id: number;
+  sort_order: number;
+}
