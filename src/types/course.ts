@@ -143,3 +143,53 @@ export interface ReorderLessonItem {
   id: number;
   sort_order: number;
 }
+
+export type QuestionType = "single_choice";
+
+export interface LessonQuestionOption {
+  id: number;
+  question_id: number;
+  option_text: string;
+  is_correct: boolean;
+  sort_order: number;
+}
+
+export interface LessonQuestion {
+  id: number;
+  lesson_id: number;
+  question_text: string;
+  question_type: QuestionType;
+  points: number;
+  sort_order: number;
+  options: LessonQuestionOption[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface QuestionOptionInput {
+  id?: number;
+  option_text: string;
+  is_correct: boolean;
+  sort_order?: number;
+}
+
+export interface CreateQuestionInput {
+  question_text: string;
+  question_type: QuestionType;
+  points?: number;
+  sort_order?: number;
+  options: QuestionOptionInput[];
+}
+
+export interface UpdateQuestionInput {
+  question_text?: string;
+  question_type?: QuestionType;
+  points?: number;
+  sort_order?: number;
+  options?: QuestionOptionInput[];
+}
+
+export interface ReorderQuestionItem {
+  id: number;
+  sort_order: number;
+}

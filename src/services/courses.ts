@@ -6,14 +6,18 @@ import type {
   CreateCourseAuthorInput,
   CreateCourseInput,
   CreateLessonInput,
+  CreateQuestionInput,
   CreateSectionInput,
   Lesson,
+  LessonQuestion,
   Paginated,
   ReorderLessonItem,
+  ReorderQuestionItem,
   ReorderSectionItem,
   UpdateCourseAuthorInput,
   UpdateCourseInput,
   UpdateLessonInput,
+  UpdateQuestionInput,
   UpdateSectionInput,
 } from "@/types/course";
 
@@ -173,5 +177,74 @@ export const lessonService = {
     api.patch<void>(
       `/courses/${courseId}/sections/${sectionId}/lessons/reorder`,
       { lessons }
+    ),
+};
+
+export const lessonQuestionService = {
+  list: (courseId: number, sectionId: number, lessonId: number) =>
+    api
+      .get<Wrapped<LessonQuestion[]>>(
+        `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}/questions`
+      )
+      .then(unwrap),
+
+  getById: (
+    courseId: number,
+    sectionId: number,
+    lessonId: number,
+    questionId: number
+  ) =>
+    api
+      .get<Wrapped<LessonQuestion>>(
+        `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}/questions/${questionId}`
+      )
+      .then(unwrap),
+
+  create: (
+    courseId: number,
+    sectionId: number,
+    lessonId: number,
+    data: CreateQuestionInput
+  ) =>
+    api
+      .post<Wrapped<LessonQuestion>>(
+        `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}/questions`,
+        data
+      )
+      .then(unwrap),
+
+  update: (
+    courseId: number,
+    sectionId: number,
+    lessonId: number,
+    questionId: number,
+    data: UpdateQuestionInput
+  ) =>
+    api
+      .patch<Wrapped<LessonQuestion>>(
+        `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}/questions/${questionId}`,
+        data
+      )
+      .then(unwrap),
+
+  remove: (
+    courseId: number,
+    sectionId: number,
+    lessonId: number,
+    questionId: number
+  ) =>
+    api.del<void>(
+      `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}/questions/${questionId}`
+    ),
+
+  reorder: (
+    courseId: number,
+    sectionId: number,
+    lessonId: number,
+    questions: ReorderQuestionItem[]
+  ) =>
+    api.patch<void>(
+      `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}/questions/reorder`,
+      { questions }
     ),
 };

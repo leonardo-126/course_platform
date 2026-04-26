@@ -5,12 +5,14 @@ import {
   type FormEvent,
 } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import {
   Eye,
   EyeOff,
   FileText,
   GripVertical,
   HelpCircle,
+  ListChecks,
   Pencil,
   Plus,
   Trash2,
@@ -391,6 +393,19 @@ export function LessonManager({
                     )}
                     {canManage && (
                       <div className="flex items-center gap-0.5">
+                        {lesson.type === "quiz" && (
+                          <Link
+                            to={`/dashboard/courses/${courseId}/sections/${sectionId}/lessons/${lesson.id}/quiz`}
+                          >
+                            <Button
+                              variant="ghost"
+                              size="icon-sm"
+                              title={t("lessons.manageQuiz")}
+                            >
+                              <ListChecks className="size-4" />
+                            </Button>
+                          </Link>
+                        )}
                         <Button
                           variant="ghost"
                           size="icon-sm"
